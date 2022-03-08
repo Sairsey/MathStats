@@ -119,9 +119,11 @@ def task2():
   for dist_name in distr_type:
     i = 0
     rows = []
-    headers = [dist_name, "z_", "med", "z_r", "z_q", "z_tr"]
+    headers = [dist_name, "$\\overline{x}$ (\\ref{mean})", "$med x$ (\\ref{med})", "$z_R$ (\\ref{zr})", "$z_Q$ (\\ref{zq})", "$z_{tr}$ (\\ref{tr_mean})"]
     for N in quan_of_numbers:
       mean = []
+      mn = []
+      mx = []
       med = []
       z_r = []
       z_q_ = []
@@ -134,28 +136,48 @@ def task2():
         z_r.append((array_sorted[0] + array_sorted[-1]) / 2)
         z_q_.append(calc_z_q(array))
         z_tr_.append(calc_z_tr(array))
-      rows.append([" E(z) " + str(N),
+        mn.append(array[0])
+        mx.append(array[-1])
+      rows.append(["n =" + str(N)])
+      rows.append(["$E(z)$",
                         np.around(np.mean(mean), decimals=6),
                         np.around(np.mean(med), decimals=6),
                         np.around(np.mean(z_r), decimals=6),
                         np.around(np.mean(z_q_), decimals=6),
-                        np.around(np.mean(z_tr_), decimals=6)])
-      rows.append([" D(z) " + str(N),
+                        np.around(np.mean(z_tr_), decimals=6),
+                        np.around(np.mean(mn), decimals=6),
+                        np.around(np.mean(mx), decimals=6),
+                        ])
+      rows.append(["$D(z)$",
                    np.around(np.std(mean) * np.std(mean), decimals=6),
                    np.around(np.std(med) * np.std(med), decimals=6),
                    np.around(np.std(z_r) * np.std(z_r), decimals=6),
                    np.around(np.std(z_q_) * np.std(z_q_), decimals=6),
-                   np.around(np.std(z_tr_) * np.std(z_tr_), decimals=6)])
+                   np.around(np.std(z_tr_) * np.std(z_tr_), decimals=6),
+                   np.around(np.std(mn) * np.std(mn), decimals=6),
+                   np.around(np.std(mx) * np.std(mx), decimals=6)])
+      #rows.append([" interval" + str(N), 
+      #             "[" + str(rows[-2][1] - rows[-1][1]) + ", " + str(rows[-2][1] + rows[-1][1]) + "]",
+      #             "[" + str(rows[-2][2] - rows[-1][2]) + ", " + str(rows[-2][2] + rows[-1][2]) + "]",
+      #             "[" + str(rows[-2][3] - rows[-1][3]) + ", " + str(rows[-2][3] + rows[-1][3]) + "]",
+      #             "[" + str(rows[-2][4] - rows[-1][4]) + ", " + str(rows[-2][4] + rows[-1][4]) + "]",
+      #             "[" + str(rows[-2][5] - rows[-1][5]) + ", " + str(rows[-2][5] + rows[-1][5]) + "]"])
       i += 1
     print(rows)
     if not os.path.isdir('task2_data'):
       os.makedirs("task2_data")
-    with open("task2_data/task2.csv", "a") as f:
-      # create the csv writer
-      writer = csv.writer(f)
-      writer.writerow(headers)
+    with open("task2_data/task2_" + dist_name + ".txt", "w") as f:
+      f.write("\\begin{tabular}{|c|c|c|c|c|c|c|c|}\n")
+      f.write("\\hline\n")
+      f.write(" & $\\overline{x}$ (\\ref{mean}) & $med x$ (\\ref{med}) & $z_R$ (\\ref{zr}) & $z_Q$ (\\ref{zq}) & $z_{tr}$ (\\ref{tr_mean}) & min(x) & max(x)\\\\\n")
+      f.write("\\hline\n")
       for row in rows:
-        writer.writerow(row)
+        if len(row) == 1:
+          f.write(row[0] + " & " * 7 + "\\\\\n")
+        else:
+          f.write(" & ".join([str(i) for i in row]) + "\\\\\n")
+        f.write("\\hline\n")
+      f.write("\\end{tabular}")
 
 
 def task3():
@@ -295,4 +317,4 @@ def task42():
   plt.show()
 
 if __name__ == "__main__":
-  task42()
+  task2()
