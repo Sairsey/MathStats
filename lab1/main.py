@@ -145,17 +145,32 @@ def task2():
                         np.around(np.mean(z_r), decimals=6),
                         np.around(np.mean(z_q_), decimals=6),
                         np.around(np.mean(z_tr_), decimals=6),
-                        np.around(np.mean(mn), decimals=6),
-                        np.around(np.mean(mx), decimals=6),
                         ])
       rows.append(["$D(z)$",
                    np.around(np.std(mean) * np.std(mean), decimals=6),
                    np.around(np.std(med) * np.std(med), decimals=6),
                    np.around(np.std(z_r) * np.std(z_r), decimals=6),
                    np.around(np.std(z_q_) * np.std(z_q_), decimals=6),
-                   np.around(np.std(z_tr_) * np.std(z_tr_), decimals=6),
-                   np.around(np.std(mn) * np.std(mn), decimals=6),
-                   np.around(np.std(mx) * np.std(mx), decimals=6)])
+                   np.around(np.std(z_tr_) * np.std(z_tr_), decimals=6)])
+      rows.append(["$E(z) - \sqrt{D(z)}$",
+                        np.around(np.mean(mean) - np.std(mean), decimals=6),
+                        np.around(np.mean(med) - np.std(med), decimals=6),
+                        np.around(np.mean(z_r) - np.std(z_r), decimals=6),
+                        np.around(np.mean(z_q_) - np.std(z_q_), decimals=6),
+                        np.around(np.mean(z_tr_) - np.std(z_tr_), decimals=6)])
+      rows.append(["$E(z) + \sqrt{D(z)}$",
+                        np.around(np.mean(mean) + np.std(mean), decimals=6),
+                        np.around(np.mean(med) + np.std(med), decimals=6),
+                        np.around(np.mean(z_r) + np.std(z_r), decimals=6),
+                        np.around(np.mean(z_q_) + np.std(z_q_), decimals=6),
+                        np.around(np.mean(z_tr_) + np.std(z_tr_), decimals=6)])
+      rows.append(["$\hat{E(z)} $",
+                        np.around(np.mean(mean), decimals=6),
+                        np.around(np.mean(med), decimals=6),
+                        np.around(np.mean(z_r), decimals=6),
+                        np.around(np.mean(z_q_), decimals=6),
+                        np.around(np.mean(z_tr_), decimals=6)])
+
       #rows.append([" interval" + str(N), 
       #             "[" + str(rows[-2][1] - rows[-1][1]) + ", " + str(rows[-2][1] + rows[-1][1]) + "]",
       #             "[" + str(rows[-2][2] - rows[-1][2]) + ", " + str(rows[-2][2] + rows[-1][2]) + "]",
@@ -169,11 +184,11 @@ def task2():
     with open("task2_data/task2_" + dist_name + ".txt", "w") as f:
       f.write("\\begin{tabular}{|c|c|c|c|c|c|c|c|}\n")
       f.write("\\hline\n")
-      f.write(" & $\\overline{x}$ (\\ref{mean}) & $med x$ (\\ref{med}) & $z_R$ (\\ref{zr}) & $z_Q$ (\\ref{zq}) & $z_{tr}$ (\\ref{tr_mean}) & min(x) & max(x)\\\\\n")
+      f.write(" & $\\overline{x}$ (\\ref{mean}) & $med x$ (\\ref{med}) & $z_R$ (\\ref{zr}) & $z_Q$ (\\ref{zq}) & $z_{tr}$ (\\ref{tr_mean}) \\\\\n")
       f.write("\\hline\n")
       for row in rows:
         if len(row) == 1:
-          f.write(row[0] + " & " * 7 + "\\\\\n")
+          f.write(row[0] + " & " * 5 + "\\\\\n")
         else:
           f.write(" & ".join([str(i) for i in row]) + "\\\\\n")
         f.write("\\hline\n")
