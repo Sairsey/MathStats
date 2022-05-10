@@ -193,12 +193,12 @@ if __name__ == "__main__":
     optimal_x = opt.fmin(lambda x: -countJakkar(x), 0)     
     print(optimal_x[0])    
         
-    plt.plot(R_interval, Jaccars, label="Jaccar")
-    plt.scatter(optimal_x[0], countJakkar(optimal_x[0]), label="optimal point at R=" + str(optimal_x[0]))    
+    plt.plot(R_interval, Jaccars, label="Jaccard")
+    plt.scatter(optimal_x[0], countJakkar(optimal_x[0]), label="optimal point at R=" + str(1.13175))    
     plt.legend()
     plt.xlabel('$R_{21}$')
-    plt.ylabel('Jakkar')
-    plt.title('Jaccar vs R')
+    plt.ylabel('Jaccard')
+    plt.title('Jaccard vs R')
     plt.savefig("report/pics/jakkar.png")
     plt.figure()
     
