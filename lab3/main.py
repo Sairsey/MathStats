@@ -192,9 +192,16 @@ if __name__ == "__main__":
         
     optimal_x = opt.fmin(lambda x: -countJakkar(x), 0)     
     print(optimal_x[0])    
+
+    min1 = opt.root(countJakkar, 1)     
+    max1 = opt.root(countJakkar, 2)     
+    print(min1.x, max1.x)    
+
         
-    plt.plot(R_interval, Jaccars, label="Jaccard")
+    plt.plot(R_interval, Jaccars, label="Jaccard", zorder=1)
     plt.scatter(optimal_x[0], countJakkar(optimal_x[0]), label="optimal point at R=" + str(1.13175))    
+    plt.scatter(min1.x, countJakkar(min1.x), label="$min_R$=" + str(min1.x[0])[0:7], color="r", zorder=2)
+    plt.scatter(max1.x, countJakkar(max1.x), label="$max_R$=" + str(max1.x[0])[0:7], color="r", zorder=2)
     plt.legend()
     plt.xlabel('$R_{21}$')
     plt.ylabel('Jaccard')
