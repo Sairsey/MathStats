@@ -1,5 +1,6 @@
 # used octave.m to build A and B
 import csv
+import math
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
 
@@ -29,6 +30,22 @@ def plot_interval(y, x, color='b', label1=""):
         plt.vlines(x, y[0], y[1], color, lw=1, label = label1)
     else:
         plt.vlines(x, y[0], y[1], color, lw=1)
+
+def plot_interval_hist(x, color='b', label1=""):
+    min_value = x[0][0]
+    max_value = x[-1][1]
+    step = 0.0001
+    bins = [min_value + step * i for i in range(math.ceil((max_value - min_value) / step))]
+    hist = [(t[1] + t[0]) / 2 for t in x]
+    cur_value = 0
+    #for el in combined_values:
+    #    if left_values.count(el) > 0:
+    #        cur_value += 1
+    #    if right_values.count(el) > 0:
+    #        cur_value -= 1
+    #    hist = hist + [el] * cur_value
+
+    plt.hist(hist, color = color, label = label1, rwidth=0.8)
 
 if __name__ == "__main__":
     data1 = load_csv('data/Ch1_800nm_0.03.csv')
@@ -139,6 +156,20 @@ if __name__ == "__main__":
     plt.savefig("report/pics/data2_const.png")
     plt.figure()
 
+    # plot first histogram
+    plot_interval_hist(data1_fixed, "C0", "$I_1^c$")       
+    plt.legend()
+    plt.title('$I_1^c$ histogram')
+    plt.savefig("report/pics/data1_hist_const.png")
+    plt.figure()
+
+    # plot second histogram
+    plot_interval_hist(data2_fixed, "C1", "$I_2^c$")       
+    plt.legend()
+    plt.title('$I_2^c$ histogram')
+    plt.savefig("report/pics/data2_hist_const.png")
+    plt.figure()
+
     R_interval = [0.001 * i + 1 for i in range(300)]
     Jaccars = []
 
@@ -169,6 +200,15 @@ if __name__ == "__main__":
     plt.ylabel('Jakkar')
     plt.title('Jaccar vs R')
     plt.savefig("report/pics/jakkar.png")
+    plt.figure()
+    
+    data1_new = [[data1_fixed[i][0] * optimal_x[0], data1_fixed[i][1] * optimal_x[0]] for i in range(len(data1_fixed))]
+    all_data = data1_new + data2_fixed
+    plot_interval_hist(all_data, "C0", "Combined with optimal R")
+    plt.legend()
+    plt.title('Histogram of combined data with optimal R21')
+    plt.savefig("report/pics/jakkar_combined_hist.png")
+
     #plt.show()
     
       
